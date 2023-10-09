@@ -1,15 +1,12 @@
-from collections import deque
 from uuid import uuid4
 
 import jwt
-from bson import ObjectId
 from flask import current_app, g, request
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest, Forbidden
 from werkzeug.security import generate_password_hash
 
-from netwerker.api import user
 from netwerker.api.user.schemas import *
 from netwerker.app import mongo
 from netwerker.utils.auth import basic_auth, token_auth
