@@ -36,7 +36,7 @@ class BasicAuth(object):
                 f : function
                     The function to decorate.
                 context : str
-                    The type of client accessing the API. 
+                    The type of client accessing the API.
                 """
 
                 auth = self.get_auth()
@@ -140,7 +140,7 @@ class TokenAuth(BasicAuth):
         Authenticate the user. This method must be overridden in a subclass.
         """
 
-        if False: # placeholder for future token validation
+        if False:  # placeholder for future token validation
             raise Unauthorized("Invalid credentials")
         else:
             try:

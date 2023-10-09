@@ -1,10 +1,11 @@
 from collections import deque
-from bson import ObjectId
 
 import xxhash
+from bson import ObjectId
 
 from netwerker.app import mongo
 from netwerker.utils.mongo_queries import get_user
+
 
 def generate_friendship_hash(_id_1: str, _id_2: str):
     # Sort the UUIDs to ensure the hash is the same regardless of the order
@@ -14,10 +15,12 @@ def generate_friendship_hash(_id_1: str, _id_2: str):
     # Generate a fast, non-cryptographic hash optimized for hash table storage
     return str(xxhash.xxh64_intdigest(concatenated_ids))
 
-def bfs_friendship_distance(start_user_id: str, target_user_id: str):
 
+def bfs_friendship_distance(start_user_id: str, target_user_id: str):
     # Initialize the BFS queue and set
-    queue = deque([(start_user_id, 0)])  # Each entry is (user_id (BSON ObjectId), distance)
+    queue = deque(
+        [(start_user_id, 0)]
+    )  # Each entry is (user_id (BSON ObjectId), distance)
     visited = set()
     while queue:
         current_user_id, current_distance = queue.popleft()
@@ -47,4 +50,3 @@ def bfs_friendship_distance(start_user_id: str, target_user_id: str):
                 queue.append((str(friend_id), current_distance + 1))
 
     return None  # No path found
-

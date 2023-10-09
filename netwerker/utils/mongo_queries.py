@@ -3,7 +3,13 @@ from werkzeug.exceptions import BadRequest, Forbidden
 from netwerker.app import mongo
 
 
-def get_user(_id = None, uuid: str = None, email: str = None, none_on_fail: bool = False, get_friends: bool = False):
+def get_user(
+    _id=None,
+    uuid: str = None,
+    email: str = None,
+    none_on_fail: bool = False,
+    get_friends: bool = False,
+):
     """
     Get user by uuid or email.
 
@@ -30,7 +36,7 @@ def get_user(_id = None, uuid: str = None, email: str = None, none_on_fail: bool
     if _id is not None:
         match_query["_id"] = _id
 
-    proj = {'friends': 0} if not get_friends else {}
+    proj = {"friends": 0} if not get_friends else {}
     try:
         user = mongo.db.users.find_one(match_query, projection=proj)
     except Exception as e:
@@ -43,4 +49,3 @@ def get_user(_id = None, uuid: str = None, email: str = None, none_on_fail: bool
         raise Forbidden("Invalid User")
 
     return user
-
