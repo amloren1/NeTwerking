@@ -173,17 +173,17 @@ class UserFriends(Resource):
         # sort the two _ids to ensure the hash is the same regardless of the order
         sorted_ids = sorted([current_user["_id"], friend["_id"]])
 
-        # Add friend to user's friend list along with hash
+        # Add friend to user's friend list
         mongo.db.users.update_one(
             {"_id": current_user["_id"]}, {"$push": {"friends": friend["_id"]}}
         )
 
-        # Add user to friend's friend list along with hash
+        # Add user to friend's friend list 
         mongo.db.users.update_one(
             {"_id": friend["_id"]}, {"$push": {"friends": current_user["_id"]}}
         )
 
-        # Add the friendship hash to the friends
+        # Add the friendship hash to the friends collection (bi-directional) 
         mongo.db.friends.insert_one(
             {
                 "friendship_hash": friendship_hash,
