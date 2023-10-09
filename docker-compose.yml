@@ -1,0 +1,39 @@
+version: '2'
+services:
+  web:
+    build: .
+    command: flask run --host=0.0.0.0
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+    depends_on:
+      - mongo
+    environment:
+      FLASK_APP: netwerker.app:create_app
+      FLASK_DEBUG: 1
+      SECRET_KEY: secret-key
+      MONGO_URI: mongodb://dev:password@mongo:27017/netwerker
+    networks:
+      - backend
+    restart: always
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    restart: always
+    networks:
+      - backend
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: netwerker
+    volumes:
+      - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,13 @@
+Dear {{ user_name }},
+
+We wanted to share some updates with you from NetWerker.
+
+{{ email_body }}
+
+Thank you for being a valued member of our community. If you have any questions, don't hesitate to reach out to us.
+
+keep on 'twerking,
+The NeTweker Team
+
+--------------------------
+You're receiving this email because you have an active account with NeTwerker. If you wish to stop receiving these emails, please update your settings on our website.
