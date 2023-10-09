@@ -8,12 +8,13 @@ from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest, Forbidden
 from werkzeug.security import generate_password_hash
+from netwerker.api import user
 
 from netwerker.api.user.schemas import *
 from netwerker.app import mongo
 from netwerker.utils.auth import basic_auth, token_auth
 from netwerker.utils.mongo_queries import get_user
-from netwerker.utils.misc import generate_friendship_hash
+from netwerker.utils.misc import bfs_friendship_distance, generate_friendship_hash
 
 ns = Namespace("users", description="Operations related to clients")
 
@@ -198,13 +199,16 @@ class UserFriends(Resource):
         #         raise e
 
 
-class UserDistance(Resource()):
+@ns.route("/<string:user_uuid>/friends/distance/<string:friend_uuid>")
+class UserDistance(Resource):
     """get distance between two users"""
-    @responds(api=ns, status_code=200)
-    def get(self, uuid1, uuid2):
-        user1 = get_user(uuid=uuid1)
-        user2 = get_user(uuid=uuid2)
+    # @responds(api=ns, status_code=200)
+    def get(self, user_uuid, friend_uuid):
+        user = get_user(uuid=user_uuid)
+        friend = get_user(uuid=friend_uuid)
 
+        # find the distance between the two users
+        distance = bfs_friendship_distance(start_user_id=str(user["_id"]), target_user_id=str(friend["_id"]))
 
-
+        return {"distance": distance}
 
