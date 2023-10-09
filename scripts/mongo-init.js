@@ -57,4 +57,6 @@ const users = Array.from({ length: 10 }, (_, i) => {
   
 db.users.insertMany(users);
 
+// Create an index on the friendship_hash field in the friends collection
+db.friends.createIndex({ "friendship_hash": 1 });
 
