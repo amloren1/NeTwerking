@@ -12,15 +12,16 @@ def generate_friendship_hash(_id_1: str, _id_2: str):
     sorted_ids = sorted([_id_1, _id_2])
     concatenated_ids = "".join(sorted_ids)
 
-    # Generate a fast, non-cryptographic hash optimized for hash table storage
     return str(xxhash.xxh64_intdigest(concatenated_ids))
 
 
 def bfs_friendship_distance(start_user_id: str, target_user_id: str):
-    # Initialize the BFS queue and set
+    """ BFS to find distance between two users via their friends. 
+    Optimization done by checking bi-directional friendships and indexed friendship hashes
+    using the friendship_hash field in the friends collection."""
     queue = deque(
         [(start_user_id, 0)]
-    )  # Each entry is (user_id (BSON ObjectId), distance)
+    )  # Each entry is (user_id (BSON ObjectId, but cast as string), distance)
     visited = set()
     while queue:
         current_user_id, current_distance = queue.popleft()
